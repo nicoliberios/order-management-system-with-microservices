@@ -1,0 +1,16 @@
+name: Deploy Microservice create
+
+on:
+  push:
+    paths:
+      - "create-restaurant-service/**"
+    branches:
+      - test
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
