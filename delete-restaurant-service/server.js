@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 });
 
 app.use(cors({
-  origin: 'http://lb-order-foot-.us-east-24578965551.elb.amazonaws.com'
+  origin: 'load balancer'
 }));
 
 app.use(bodyParser.json());
