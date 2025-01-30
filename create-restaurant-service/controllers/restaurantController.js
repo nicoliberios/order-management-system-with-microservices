@@ -12,4 +12,3 @@ const createRestaurant = async (req, res) => {
 module.exports = {
   createRestaurant
 };
-
