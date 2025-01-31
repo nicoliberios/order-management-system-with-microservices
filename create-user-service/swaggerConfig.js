@@ -7,7 +7,7 @@ const swaggerOptions = {
     info: {
       title: 'Create User API',
       version: '1.0.0',
-      description: 'API para la creación de usuarios',
+      description: 'APIs for user creation',
     },
     servers: [
       {
@@ -16,7 +16,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ['./routes/*.js'], // Aquí se indican los archivos donde están definidos los endpoints
+  apis: ['./routes/*.js'], //The files where the endpoints are defined are indicated
 };
 
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
