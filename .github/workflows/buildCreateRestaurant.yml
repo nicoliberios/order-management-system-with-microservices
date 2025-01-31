@@ -5,7 +5,7 @@ on:
     paths:
       - "create-restaurant-service/**"
     branches:
-      - test
+      - main
 
 jobs:
   deploy:
