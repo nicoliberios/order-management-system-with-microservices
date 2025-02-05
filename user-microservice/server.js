@@ -15,7 +15,6 @@ app.get('/', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Users Microservices Running' });
 });
 
-
 app.use(cors({
   origin: 'load balancer'
 }));
