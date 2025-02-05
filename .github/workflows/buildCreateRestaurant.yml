@@ -50,4 +50,4 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/awscreaterestaurant:latest
 
             # Run the new image in a Docker container
-            sudo docker run -d --name awscreaterestaurant -p 80:80 ${{ secrets.DOCKER_USERNAME }}/awscreaterestaurant:latest
+            sudo docker run -d --name awscreaterestaurant -p 80:4013 ${{ secrets.DOCKER_USERNAME }}/awscreaterestaurant:latest

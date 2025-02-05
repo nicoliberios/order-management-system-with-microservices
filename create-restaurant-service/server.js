@@ -19,7 +19,6 @@ app.use(cors({
   origin: 'http://lb-order-foot-.us-east-24578965551.elb.amazonaws.com'
 }));
 
-
 app.use(bodyParser.json());
 app.use('/api', restaurantRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
