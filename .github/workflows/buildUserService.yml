@@ -3,7 +3,7 @@ name: Deploy Microservice to ec2-read-restaurant
 on:
   push:
     paths:
-      - "read-restaurant-service/**"
+      - "user-microservice/**"
     branches:
       - dev
 
@@ -43,11 +43,11 @@ jobs:
             sudo apt-get install -y docker.io
 
             # Stop and remove any previous container if it exists
-            sudo docker stop awscreaterestaurant || true
-            sudo docker rm awscreaterestaurant || true
+            sudo docker stop awsuser || true
+            sudo docker rm awsuser || true
 
             # Pull the Docker image from Docker Hub
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/awsusandodocker:latest
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/awsuser:latest
 
             # Run the new image in a Docker container
-            sudo docker run -d --name awscreaterestaurant -p 80:80 ${{ secrets.DOCKER_USERNAME }}/awscreaterestaurant:latest
+            sudo docker run -d --name awsuser -p 80:80 ${{ secrets.DOCKER_USERNAME }}/awscreaterestaurant:latest

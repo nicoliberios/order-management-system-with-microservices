@@ -20,6 +20,7 @@ app.use(cors({
   origin: 'load balancer'
 }));
 
+
 app.use(bodyParser.json());
 app.use('/api', userRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
