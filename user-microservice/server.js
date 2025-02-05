@@ -25,5 +25,5 @@ app.use('/api', userRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(port, () => {
-  console.log(`user-microservice listening at http://ec2-54-243-36-194.compute-1.amazonaws.com:${port}`);
+  console.log(`user-microservice listening at http://localhost:${port}`);
 });
