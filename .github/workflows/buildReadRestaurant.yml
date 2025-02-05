@@ -1,9 +1,9 @@
-name: Deploy Microservice to ec2-create-restaurant
+name: Deploy Microservice to ec2-read-restaurant
 
 on:
   push:
     paths:
-      - "create-restaurant-service/**"
+      - "read-restaurant-service/**"
     branches:
       - dev
 
@@ -50,4 +50,4 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/awsusandodocker:latest
 
             # Run the new image in a Docker container
-            sudo docker run -d --name awscreaterestaurant -p 80:4013 ${{ secrets.DOCKER_USERNAME }}/awscreaterestaurant:latest
+            sudo docker run -d --name awscreaterestaurant -p 80:80 ${{ secrets.DOCKER_USERNAME }}/awscreaterestaurant:latest
