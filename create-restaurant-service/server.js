@@ -13,6 +13,7 @@ app.get('/', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'create-restaurant-service Running' });
 });
 
+
 app.use(cors({
   origin: 'http://lb-order-foot-.us-east-24578965551.elb.amazonaws.com'
 }));
