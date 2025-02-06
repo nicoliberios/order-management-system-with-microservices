@@ -29,6 +29,7 @@ app.use('/api', restaurantRoutes);
 //Swagger Documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+
 //Server Initialization
 app.listen(port, () => {
   console.log(`delete-restaurant-service listening at http://localhost:${port}`);
