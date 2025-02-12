@@ -50,4 +50,4 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/awsdeletedessert:latest
 
             # Run the new image in a Docker container
-            sudo docker run -d --name awsdeletedessert -p 80:4022 ${{ secrets.DOCKER_USERNAME }}/awscreaterestaurant:latest
+            sudo docker run -d --name awsdeletedessert -p 80:4022 ${{ secrets.DOCKER_USERNAME }}/awsdeletedessert:latest
