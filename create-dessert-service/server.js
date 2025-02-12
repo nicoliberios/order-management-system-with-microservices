@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 });
 
 app.use(cors({
-  origin: ''
+  origin: 'add load balancer'
 }));
 
 app.use(bodyParser.json());
