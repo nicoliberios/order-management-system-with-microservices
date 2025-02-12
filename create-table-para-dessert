@@ -1,0 +1,18 @@
+-- Create the database
+CREATE DATABASE "desserts-db";
+
+-- Connect to the newly created database
+\c "desserts-db";
+
+-- Create the desserts table
+CREATE TABLE desserts (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT
+);
+
+-- Insert sample data
+INSERT INTO desserts (name, description) 
+VALUES 
+    ('Chocolate Cake', 'Delicious chocolate cake with cream'),
+    ('Strawberry Cheesecake', 'Classic cheesecake with fresh strawberries');
