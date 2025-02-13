@@ -6,26 +6,24 @@ const userRoutes = require('./routes/userRoutes');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
-dotenv.config(); 
+dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 4022; 
+const port = process.env.PORT;
 
 app.get('/', (req, res) => {
-  res.status(200).json({ status: 'ok', message: 'Users Microservice Running' });
+  res.status(200).json({ status: 'ok', message: 'Users Microservices Running' });
 });
 
-
 app.use(cors({
-  origin: 'http://54.85.92.48:80' 
+  origin: 'http://54.85.92.48:80'
 }));
 
 
-
 app.use(bodyParser.json());
-app.use('/api', userRoutes); 
+app.use('/api', userRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(port, () => {
-  console.log(`User microservice listening at http://localhost:${port}`);
+  console.log(`user-microservice listening at http://localhost:${port}`);
 });
