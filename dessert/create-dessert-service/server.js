@@ -7,7 +7,6 @@ const cors = require('cors');
 
 const app = express();
 const port = 4014;
-
 app.get('/', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Microservice Running' });
 });

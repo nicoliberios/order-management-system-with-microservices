@@ -84,6 +84,9 @@ jobs:
               echo "Docker Compose ya está instalado."
             fi
 
+            # Subir el archivo docker-compose.yml al servidor EC2
+            scp -i ${{ secrets.EC2_SSH_KEY }} ./docker-compose.yml ${{ secrets.USERNAME }}@${{ secrets.HOSTDESSERT }}:/home/ubuntu/BonAppEtit/
+
             # Detener y eliminar contenedores existentes si es necesario
             sudo docker-compose -f /home/ubuntu/BonAppEtit/docker-compose.yml down
 
