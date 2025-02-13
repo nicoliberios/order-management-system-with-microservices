@@ -20,6 +20,8 @@ app.use(cors({
   origin: 'http://54.85.92.48:80' 
 }));
 
+
+
 app.use(bodyParser.json());
 app.use('/api', userRoutes); 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
