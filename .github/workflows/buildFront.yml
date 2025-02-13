@@ -1,0 +1,56 @@
+name: Deploy Frontend to EC2
+
+on:
+  push:
+    paths:
+      - "front/**"
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    name: Deploy Frontend to EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 1: Build and Push Docker Image to Docker Hub
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./front
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/frontend-app:latest
+
+      # Step 2: Deploy to EC2
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOSTfront }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # Actualizar paquetes y asegurarse de que Docker está instalado
+            sudo apt-get update -y
+            sudo apt-get install -y docker.io
+
+            # Detener y eliminar cualquier contenedor previo
+            sudo docker stop frontend-app || true
+            sudo docker rm frontend-app || true
+
+            # Eliminar la imagen anterior para forzar la actualización
+            sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/frontend-app:latest || true
+
+            # Descargar la nueva imagen de Docker Hub
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend-app:latest
+
+            # Ejecutar el nuevo contenedor en el puerto 80
+            sudo docker run -d --name frontend-app -p 80:80 ${{ secrets.DOCKER_USERNAME }}/frontend-app:latest
