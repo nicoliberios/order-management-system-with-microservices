@@ -26,7 +26,7 @@ jobs:
       - name: Build and push Docker image to Docker Hub
         uses: docker/build-push-action@v2
         with:
-          context: ./dessert
+          context: ./dessert # Este es el directorio donde todos los servicios se encuentran
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/awsreadrestaurant:latest
 
@@ -50,4 +50,4 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/awsreadrestaurant:latest
 
             # Run the new image in a Docker container
-            sudo docker run -d --name awsreadrestaurant -p 80:4020 ${{ secrets.DOCKER_USERNAME }}/awscreaterestaurant:latest
+            sudo docker run -d --name awsreadrestaurant -p 80:4020 ${{ secrets.DOCKER_USERNAME }}/awsreadrestaurant:latest
