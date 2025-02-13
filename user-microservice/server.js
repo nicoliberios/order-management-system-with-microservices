@@ -15,9 +15,9 @@ app.get('/', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Users Microservice Running' });
 });
 
-// Configura CORS para permitir acceso desde el frontend
+
 app.use(cors({
-  origin: 'http://54.85.92.48:80' // Cambia esto si tu frontend se sirve desde otro lugar
+  origin: 'http://54.85.92.48:80' 
 }));
 
 app.use(bodyParser.json());
