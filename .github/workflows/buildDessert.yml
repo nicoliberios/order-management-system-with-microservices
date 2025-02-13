@@ -54,6 +54,25 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/update-dessert-service:latest
 
+      # Subir los archivos de configuración a la EC2
+      - name: Upload files to EC2
+        uses: appleboy/scp-action@v0.1.1
+        with:
+          host: ${{ secrets.HOSTDESSERT }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "dessert/ /home/ubuntu/BonAppEtit/dessert"
+          target: "/home/ubuntu/BonAppEtit/dessert"
+
+      - name: Upload docker-compose.yml to EC2
+        uses: appleboy/scp-action@v0.1.1
+        with:
+          host: ${{ secrets.HOSTDESSERT }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "docker-compose.yml"
+          target: "/home/ubuntu/BonAppEtit/docker-compose.yml"
+
       # Desplegar los microservicios en EC2 usando SSH y Docker Compose
       - name: Deploy services to EC2
         uses: appleboy/ssh-action@master
@@ -80,15 +99,14 @@ jobs:
               echo "Docker Compose no encontrado. Instalando Docker Compose..."
               sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
               sudo chmod +x /usr/local/bin/docker-compose
+              # Añadir docker-compose a PATH
+              sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
             else
               echo "Docker Compose ya está instalado."
             fi
 
-            # Subir el archivo docker-compose.yml al servidor EC2
-            scp -i ${{ secrets.EC2_SSH_KEY }} ./dessert/docker-compose.yml ${{ secrets.USERNAME }}@${{ secrets.HOSTDESSERT }}:/home/ubuntu/BonAppEtit/
-
-            # Verificar que el archivo docker-compose.yml haya sido subido
-            ls /home/ubuntu/BonAppEtit/docker-compose.yml
+            # Verificar que docker-compose está correctamente instalado
+            docker-compose --version
 
             # Detener y eliminar contenedores existentes si es necesario
             sudo docker-compose -f /home/ubuntu/BonAppEtit/docker-compose.yml down

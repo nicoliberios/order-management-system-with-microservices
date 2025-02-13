@@ -20,6 +20,7 @@ app.use(bodyParser.json());
 app.use('/api', dessertRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+
 app.listen(port, () => {
   console.log(`Dessert microservice is running at http://localhost:${port}`);
   console.log(`API Docs: http://localhost:${port}/api-docs`);
