@@ -85,7 +85,10 @@ jobs:
             fi
 
             # Subir el archivo docker-compose.yml al servidor EC2
-            scp -i ${{ secrets.EC2_SSH_KEY }} ./docker-compose.yml ${{ secrets.USERNAME }}@${{ secrets.HOSTDESSERT }}:/home/ubuntu/BonAppEtit/
+            scp -i ${{ secrets.EC2_SSH_KEY }} ./dessert/docker-compose.yml ${{ secrets.USERNAME }}@${{ secrets.HOSTDESSERT }}:/home/ubuntu/BonAppEtit/
+
+            # Verificar que el archivo docker-compose.yml haya sido subido
+            ls /home/ubuntu/BonAppEtit/docker-compose.yml
 
             # Detener y eliminar contenedores existentes si es necesario
             sudo docker-compose -f /home/ubuntu/BonAppEtit/docker-compose.yml down
