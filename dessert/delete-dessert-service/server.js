@@ -13,7 +13,6 @@ app.get('/', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Microservice Running' });
 });
 
-
 app.use(cors({
   origin: 'add url load balancer'
 }));

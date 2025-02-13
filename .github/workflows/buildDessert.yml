@@ -62,15 +62,33 @@ jobs:
           username: ${{ secrets.USERNAME }} # Tu usuario de EC2
           key: ${{ secrets.EC2_SSH_KEY }} # Clave SSH para la autenticación
           script: |
-            # Actualiza el sistema y Docker
+            # Actualizar el sistema
             sudo apt-get -y update
-            sudo apt-get install -y docker.io docker-compose
+
+            # Instalar Docker si no está instalado
+            if ! command -v docker &> /dev/null
+            then
+              echo "Docker no encontrado. Instalando Docker..."
+              sudo apt-get install -y docker.io
+            else
+              echo "Docker ya está instalado."
+            fi
+
+            # Instalar Docker Compose si no está instalado
+            if ! command -v docker-compose &> /dev/null
+            then
+              echo "Docker Compose no encontrado. Instalando Docker Compose..."
+              sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+              sudo chmod +x /usr/local/bin/docker-compose
+            else
+              echo "Docker Compose ya está instalado."
+            fi
 
             # Detener y eliminar contenedores existentes si es necesario
-            sudo docker-compose -f /path/to/your/docker-compose.yml down
+            sudo docker-compose -f /home/ubuntu/BonAppEtit/docker-compose.yml down
 
             # Obtener las últimas imágenes de Docker desde Docker Hub
-            sudo docker-compose -f /path/to/your/docker-compose.yml pull
+            sudo docker-compose -f /home/ubuntu/BonAppEtit/docker-compose.yml pull
 
             # Ejecutar los contenedores de los servicios
-            sudo docker-compose -f /path/to/your/docker-compose.yml up -d
+            sudo docker-compose -f /home/ubuntu/BonAppEtit/docker-compose.yml up -d
