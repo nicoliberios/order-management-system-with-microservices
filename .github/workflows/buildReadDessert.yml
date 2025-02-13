@@ -34,7 +34,7 @@ jobs:
       - name: Deploy Docker container to EC2
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOSTREADDESSERT }}
+          host: ${{ secrets.HOSTDESSERT }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |

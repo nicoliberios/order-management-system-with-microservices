@@ -1,4 +1,4 @@
-name: Deploy Microservice to ec2Dessert
+name: Deploy Microservices to EC2Dessert
 
 on:
   push:
@@ -8,46 +8,69 @@ on:
       - dev
 
 jobs:
-  deploy:
-    name: Deploy to EC2 and Docker Hub
+  build_and_deploy:
+    name: Build and Deploy Microservices
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout the files
+      - name: Checkout the repository
         uses: actions/checkout@v2
 
-      # Step 1: Build and push the image to Docker Hub
-      - name: Log in to DockerHub
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push Docker image to Docker Hub
+      # Construir y subir las imágenes de Docker
+      - name: Build and Push Docker image for create-dessert-service
         uses: docker/build-push-action@v2
         with:
-          context: ./dessert # Este es el directorio donde todos los servicios se encuentran
+          context: ./dessert/create-dessert-service
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/awsreadrestaurant:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/create-dessert-service:latest
 
-      # Step 2: Deploy to EC2 using Docker
-      - name: Deploy Docker container to EC2
+      - name: Build and Push Docker image for delete-dessert-service
+        uses: docker/build-push-action@v2
+        with:
+          context: ./dessert/delete-dessert-service
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/delete-dessert-service:latest
+
+      - name: Build and Push Docker image for read-dessert-service
+        uses: docker/build-push-action@v2
+        with:
+          context: ./dessert/read-dessert-service
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/read-dessert-service:latest
+
+      - name: Build and Push Docker image for update-dessert-service
+        uses: docker/build-push-action@v2
+        with:
+          context: ./dessert/update-dessert-service
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/update-dessert-service:latest
+
+      # Desplegar los microservicios en EC2 usando SSH y Docker Compose
+      - name: Deploy services to EC2
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOSTDESSERT }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          host: ${{ secrets.HOSTDESSERT }} # Dirección IP de tu EC2
+          username: ${{ secrets.USERNAME }} # Tu usuario de EC2
+          key: ${{ secrets.EC2_SSH_KEY }} # Clave SSH para la autenticación
           script: |
-            # Update the system and Docker
+            # Actualiza el sistema y Docker
             sudo apt-get -y update
-            sudo apt-get install -y docker.io
+            sudo apt-get install -y docker.io docker-compose
 
-            # Stop and remove any previous container if it exists
-            sudo docker stop awsreadrestaurant || true
-            sudo docker rm awsreadrestaurant || true
+            # Detener y eliminar contenedores existentes si es necesario
+            sudo docker-compose -f /path/to/your/docker-compose.yml down
 
-            # Pull the Docker image from Docker Hub
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/awsreadrestaurant:latest
+            # Obtener las últimas imágenes de Docker desde Docker Hub
+            sudo docker-compose -f /path/to/your/docker-compose.yml pull
 
-            # Run the new image in a Docker container
-            sudo docker run -d --name awsreadrestaurant -p 80:4020 ${{ secrets.DOCKER_USERNAME }}/awsreadrestaurant:latest
+            # Ejecutar los contenedores de los servicios
+            sudo docker-compose -f /path/to/your/docker-compose.yml up -d
