@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 
 
 app.use(cors({
-  origin: 'http://54.85.92.48:80' 
+  origin: 'http://ec2-44-202-149-62.compute-1.amazonaws.com' 
 }));
 
 app.use(bodyParser.json());
