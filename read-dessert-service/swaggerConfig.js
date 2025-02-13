@@ -16,6 +16,7 @@ const swaggerOptions = {
   apis: ['./routes/dessertsRoutes.js'],  // Path to the API routes files
 };
 
+
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
 
 module.exports = swaggerSpec;
