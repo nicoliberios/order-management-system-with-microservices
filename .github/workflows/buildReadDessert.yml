@@ -1,9 +1,9 @@
-name: Deploy Microservice to ec2-update-dessert
+name: Deploy Microservice to ec2-read-dessert
 
 on:
   push:
     paths:
-      - "update-dessert-service/**"
+      - "read-dessert-service/**"
     branches:
       - dev
 
@@ -26,15 +26,15 @@ jobs:
       - name: Build and push Docker image to Docker Hub
         uses: docker/build-push-action@v2
         with:
-          context: ./update-dessert-service
+          context: ./read-dessert-service
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/awsupdatedessert:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/awsreaddessert:latest
 
       # Step 2: Deploy to EC2 using Docker
       - name: Deploy Docker container to EC2
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOSTUPDATESERVICE }}
+          host: ${{ secrets.HOSTREADDESSERT }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
@@ -43,11 +43,11 @@ jobs:
             sudo apt-get install -y docker.io
 
             # Stop and remove any previous container if it exists
-            sudo docker stop awsupdatedessert || true
-            sudo docker rm awsupdatedessert || true
+            sudo docker stop awsreaddessert || true
+            sudo docker rm awsreaddessert || true
 
             # Pull the Docker image from Docker Hub
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/awsupdatedessert:latest
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/awsreaddessert:latest
 
             # Run the new image in a Docker container
-            sudo docker run -d --name awsupdatedessert -p 80:4011 ${{ secrets.DOCKER_USERNAME }}/awsupdatedessert:latest
+            sudo docker run -d --name awsreaddessert -p 80:4019 ${{ secrets.DOCKER_USERNAME }}/awsreaddessert:latest
