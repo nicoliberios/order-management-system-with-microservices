@@ -6,25 +6,24 @@ const userRoutes = require('./routes/userRoutes');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
-dotenv.config();
-
+dotenv.config(); // Cargar configuración del archivo .env
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 4022; // Si no se especifica el puerto en .env, se usa 4022
 
 app.get('/', (req, res) => {
-  res.status(200).json({ status: 'ok', message: 'Users Microservices Running' });
+  res.status(200).json({ status: 'ok', message: 'Users Microservice Running' });
 });
 
+// Configura CORS para permitir acceso desde el frontend
 app.use(cors({
-  origin: 'http://54.85.92.48:80'
+  origin: 'http://54.85.92.48:80' // Cambia esto si tu frontend se sirve desde otro lugar
 }));
 
-
 app.use(bodyParser.json());
-app.use('/api', userRoutes);
+app.use('/api', userRoutes); // Rutas de usuarios
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(port, () => {
-  console.log(`user-microservice listening at http://localhost:${port}`);
+  console.log(`User microservice listening at http://localhost:${port}`);
 });
